@@ -73,8 +73,11 @@ class Store {
           item.selected = false;
         }
         if (item.code === code) {
+          item.selectionCount > 0 
+            ? !item.selected ? item.selectionCount++ : null  
+            : item.selectionCount = 1;
+          
           item.selected = !item.selected;
-          item.selectionCount > 0 ? item.selectionCount++ : item.selectionCount = 1;
         }
         return item;
       })
