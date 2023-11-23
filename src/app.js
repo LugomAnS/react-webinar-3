@@ -1,5 +1,5 @@
 import React from 'react';
-import {createElement} from './utils.js';
+import {createElement, wordDeclination} from './utils.js';
 import './styles.css';
 
 /**
@@ -26,7 +26,8 @@ function App({store}) {
               <div className={'Item' + (item.selected ? ' Item_selected' : '')}
                    onClick={() => store.selectItem(item.code)}>
                 <div className='Item-code'>{item.code}</div>
-                <div className='Item-title'>{item.title + (item.selectionCount > 0 ? ` | Выделяли ${item.selectionCount} раз` : '')}</div>
+                <div className='Item-title'>{item.title + (item.selectionCount > 0 
+                  ? ` | Выделяли ${item.selectionCount} ${wordDeclination(item.selectionCount)}` : '')}</div>
                 <div className='Item-actions'>
                   <button onClick={() => store.deleteItem(item.code)}>
                     Удалить

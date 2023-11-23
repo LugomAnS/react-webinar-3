@@ -26,3 +26,21 @@ export function createElement(name, props = {}, ...children) {
 
   return element;
 }
+/*
+ * Склонение "раз" в зависимости от количества выделений
+ */
+export function wordDeclination(number) {
+  let value = number % 100;
+  if(value >= 10 && value <= 20) {
+    return "раз";
+  }
+
+  value %= 10;
+  if(value === 1) {
+    return "раз";
+  } else if (value === 0 || value > 4) {
+    return "раз";
+  } else {
+    return "раза";
+  }
+}

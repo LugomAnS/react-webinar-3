@@ -69,7 +69,8 @@ class Store {
     this.setState({
       ...this.state,
       list: this.state.list.map(item => {
-        if(item.code !== code) {
+        const isNotDeleted = this.state.list.find(item => item.code == code);
+        if(!!isNotDeleted && item.code !== code) {
           item.selected = false;
         }
         if (item.code === code) {
