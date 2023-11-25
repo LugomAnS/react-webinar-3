@@ -4,7 +4,7 @@
 class Store {
   constructor(initState = {}) {
     this.state = initState;
-    this.state.index = this.state.list.length + 1;
+    this.state.index = this.state.list.slice().sort((a, b) => a.code - b.code)[this.state.list.length - 1].code + 1;
     this.listeners = []; // Слушатели изменений состояния
   }
 
