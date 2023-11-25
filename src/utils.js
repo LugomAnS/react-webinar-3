@@ -28,19 +28,23 @@ export function createElement(name, props = {}, ...children) {
 }
 /*
  * Склонение "раз" в зависимости от количества выделений
+* @param wordforms - формы слова
+* @type string[] - массив строк со значениями
  */
-export function wordDeclination(number) {
+export function wordDeclination(number, wordForms) {
+  const [single, twoFour, many] = wordForms;
+
   let value = number % 100;
   if(value >= 10 && value <= 20) {
-    return "раз";
+    return many;
   }
 
   value %= 10;
   if(value === 1) {
-    return "раз";
+    return single;
   } else if (value === 0 || value > 4) {
-    return "раз";
+    return many;
   } else {
-    return "раза";
+    return twoFour;
   }
 }
