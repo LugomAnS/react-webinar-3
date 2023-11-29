@@ -43,7 +43,7 @@ function App({store}) {
           <Modalfooter cartList={cartList}/>
         </ModalLayout>
       )}
-      <Head title='Приложение на чистом JS'/>
+      <Head title='Магазин'/>
       <Controls
             list={cartList}
             onCartSwitch={callbacks.onCartSwitch}/>
