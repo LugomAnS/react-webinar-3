@@ -1,0 +1,20 @@
+import React from "react";
+import PropTypes from "prop-types";
+import './style.css';
+
+function ModalFooter({cartList}) {
+  return (
+    <div className="CartFooter">
+      <div>{`Итого ${cartList.reduce((a, i) => a = a + i.price * i.quantity, 0)} Р`}</div>
+    </div>
+  );
+}
+
+ModalFooter.propTypes = {
+  cartList: PropTypes.arrayOf(PropTypes.shape({
+    price: PropTypes.number,
+    quantity: PropTypes.number
+  })).isRequired
+};
+
+export default React.memo(ModalFooter);

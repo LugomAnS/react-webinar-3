@@ -1,0 +1,8 @@
+.CartList {
+	border-top: 1px dashed #ccc;
+}
+
+.CartList-empty {
+	padding: 20px;
+	border-bottom: 1px dashed #ccc;
+}
