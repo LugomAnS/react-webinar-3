@@ -1,8 +1,12 @@
-.CartFooter {
+.ModalFooter {
 	display: flex;
 	justify-content: flex-end;
 	margin-bottom: 70px;
   padding: 20px 120px 20px 20px;
 	font-size: 18px;
 	font-weight: 700;
+}
+
+.ModalFooter-price {
+  padding-left: 50px;
 }

@@ -6,13 +6,13 @@ import './style.css';
 function ModalList({list, onDeleteItemFromCart}) {
 
   return (
-    <div className="CartList">
+    <div className="ModalList">
       {list.map(item => <Modalitem
           key={item.code}
           item={item}
           onDeleteItemFromCart={onDeleteItemFromCart}
           />)}
-      {list.length === 0 && (<div className="CartList-empty">Корзина пуста</div>)}
+      {list.length === 0 && (<div className="ModalList-empty">Корзина пуста</div>)}
     </div>
   );
 }

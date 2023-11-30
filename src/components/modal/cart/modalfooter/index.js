@@ -4,8 +4,9 @@ import './style.css';
 
 function ModalFooter({cartList}) {
   return (
-    <div className="CartFooter">
-      <div>{`Итого ${cartList.reduce((a, i) => a = a + i.price * i.quantity, 0)} Р`}</div>
+    <div className="ModalFooter">
+      <div>Итого</div>
+      <div className="ModalFooter-price">{`${cartList.reduce((a, i) => a = a + i.price * i.quantity, 0)} Р`}</div>
     </div>
   );
 }
