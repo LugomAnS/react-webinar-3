@@ -1,12 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { formatCost } from "../../../../utils";
 import './style.css';
 
 function ModalFooter({cartList}) {
   return (
     <div className="ModalFooter">
       <div>Итого</div>
-      <div className="ModalFooter-price">{`${cartList.reduce((a, i) => a = a + i.price * i.quantity, 0)} Р`}</div>
+      <div className="ModalFooter-price">{`${formatCost(cartList.reduce((a, i) => a = a + i.price * i.quantity, 0))} Р`}</div>
     </div>
   );
 }

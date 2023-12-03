@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { formatCost } from "../../../../utils";
 import './style.css';
 
 function ModalItem({item, onDeleteItemFromCart}) {
@@ -15,7 +16,7 @@ function ModalItem({item, onDeleteItemFromCart}) {
     <div className="Item">
       <div className="Item-code">{item.code}</div>
       <div className="Item-title">{item.title}</div>
-      <div className="Item-cartprice">{`${item.price} ₽`}</div>
+      <div className="Item-cartprice">{`${formatCost(item.price)} ₽`}</div>
       <div className="Item-quantity">{`${item.quantity} шт`}</div>
       <div className="Item-actions">
         <button onClick={callbacks.onDelete}>Удалить</button>

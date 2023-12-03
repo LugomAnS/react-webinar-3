@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from 'prop-types';
 import './style.css';
-import { plural } from "../../utils";
+import { formatCost, plural } from "../../utils";
 
 function Controls({list, onCartSwitch}) {
   return (
@@ -12,7 +12,7 @@ function Controls({list, onCartSwitch}) {
           one: "товар",
           few: "товара",
           many: "товаров"
-        })} \/ ${list.reduce((a, i) => a = a + i.price * i.quantity, 0)} ₽` : "пусто"}</div>
+        })} \/ ${formatCost(list.reduce((a, i) => a = a + i.price * i.quantity, 0))} ₽` : "пусто"}</div>
       <button className="Controls-button" onClick={() => onCartSwitch()}>Перейти</button>
     </div>
   )
