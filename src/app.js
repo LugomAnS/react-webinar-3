@@ -4,9 +4,9 @@ import Controls from "./components/controls";
 import Head from "./components/head";
 import PageLayout from "./components/page-layout";
 import ModalLayout from "./components/modal/layout";
-import ModalHead from "./components/modal/cart/modalhead";
-import ModalList from "./components/modal/cart/modallist";
-import Modalfooter from './components/modal/cart/modalfooter';
+import CartHead from "./components/modal/cart/cart-head";
+import CartList from "./components/modal/cart/cart-list";
+import CartFooter from './components/modal/cart/cart-footer';
 
 /**
  * Приложение
@@ -14,13 +14,11 @@ import Modalfooter from './components/modal/cart/modalfooter';
  * @returns {React.ReactElement}
  */
 function App({store}) {
-  const list = store.getState().list;
-  const cartList = store.getState().cart;
-  const modalState = store.getState().isCart;
+  const {list, cart, isCart, totalPrice, goodsCount } = store.getState();
 
   const callbacks = {
-    onAddItemToCart: useCallback((item) => {
-      store.addItemToCart(item);
+    onAddItemToCart: useCallback((code) => {
+      store.addItemToCart(code);
     }, [store]),
 
     onDeleteItemFromCart: useCallback((code) => {
@@ -34,18 +32,20 @@ function App({store}) {
 
   return (
     <PageLayout>
-      {modalState && (
+      {isCart && (
         <ModalLayout>
-          <ModalHead onCartSwitch={callbacks.onCartSwitch}/>
-          <ModalList
-            list={cartList}
+          <CartHead onCartSwitch={callbacks.onCartSwitch}/>
+          <CartList
+            list={cart}
             onDeleteItemFromCart={callbacks.onDeleteItemFromCart}/>
-          <Modalfooter cartList={cartList}/>
+          <CartFooter totalPrice={totalPrice}/>
         </ModalLayout>
       )}
+
       <Head title='Магазин'/>
       <Controls
-            list={cartList}
+            goodsCount={goodsCount}
+            totalPrice={totalPrice}
             onCartSwitch={callbacks.onCartSwitch}/>
       <List list={list}
             onAddItemToCart={callbacks.onAddItemToCart}/>

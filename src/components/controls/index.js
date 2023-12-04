@@ -1,30 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from 'prop-types';
-import './style.css';
 import { formatCost, plural } from "../../utils";
+import './style.css';
 
-function Controls({list, onCartSwitch}) {
-  return (
+function Controls({goodsCount, totalPrice, onCartSwitch}) {
+
+ return (
     <div className='Controls'>
       <div className="Controls-desc">В корзине:</div>
-      <div className="Controls-cart">{list.length ?
-        `${list.length} ${plural(list.length, {
+      <div className="Controls-cart">{goodsCount ?
+        `${goodsCount} ${plural(goodsCount, {
           one: "товар",
           few: "товара",
           many: "товаров"
-        })} \/ ${formatCost(list.reduce((a, i) => a = a + i.price * i.quantity, 0))} ₽` : "пусто"}</div>
+        })} /\ ${formatCost(totalPrice)} ₽` : "пусто"}</div>
       <button className="Controls-button" onClick={() => onCartSwitch()}>Перейти</button>
     </div>
   )
 }
 
 Controls.propTypes = {
-  list: PropTypes.arrayOf(PropTypes.shape({
-    code: PropTypes.number,
-    title: PropTypes.string,
-    price: PropTypes.number,
-    quantity: PropTypes.number
-  })).isRequired,
+  goodsCount: PropTypes.number,
+  totalPrice: PropTypes.number,
   onCartSwitch: PropTypes.func
 };
 

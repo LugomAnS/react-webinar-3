@@ -2,23 +2,23 @@ import React from "react";
 import PropTypes from "prop-types";
 import './style.css';
 
-function ModalHead({onCartSwitch}) {
+function CartHead({onCartSwitch}) {
   return (
-    <div className="Modalhead">
+    <div className="Carthead">
       <h1>Корзина</h1>
-      <div className="Modalhead-actions">
+      <div className="Carthead-actions">
         <button onClick={() => onCartSwitch()}>Закрыть</button>
       </div>
   </div>
   )
 }
 
-ModalHead.propTypes = {
+CartHead.propTypes = {
   onCartSwitch: PropTypes.func
 }
 
-ModalHead.defaultProps = {
+CartHead.defaultProps = {
   onCartSwitch: () => {}
 }
 
-export default React.memo(ModalHead);
+export default React.memo(CartHead);

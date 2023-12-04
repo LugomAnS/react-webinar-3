@@ -1,4 +1,4 @@
-.ModalFooter {
+.Cartfooter {
 	display: flex;
 	justify-content: flex-end;
 	margin-bottom: 70px;
@@ -7,6 +7,6 @@
 	font-weight: 700;
 }
 
-.ModalFooter-price {
+.Cartfooter-price {
   padding-left: 50px;
 }

@@ -6,8 +6,8 @@ import { formatCost } from "../../utils";
 function Item(props) {
 
   const callbacks = {
-    onAddItemToCart: (item) => {
-      props.onAddItemToCart(item);
+    onAddItemToCart: (code) => {
+      props.onAddItemToCart(code);
     }
   }
 
@@ -17,7 +17,7 @@ function Item(props) {
       <div className='Item-title'>{props.item.title}</div>
       <div className='Item-price'>{formatCost(props.item.price) + " ₽"}</div>
       <div className='Item-actions'>
-        <button onClick={() => callbacks.onAddItemToCart(props.item)}>
+        <button onClick={() => callbacks.onAddItemToCart(props.item.code)}>
           Добавить
         </button>
       </div>

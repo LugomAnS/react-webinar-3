@@ -9,6 +9,8 @@ class Store {
     this.listeners = []; // Слушатели изменений состояния
     this.state.cart = [];
     this.state.isCart = false;
+    this.state.goodsCount = 0;
+    this.state.totalPrice = 0;
   }
 
   /**
@@ -42,21 +44,30 @@ class Store {
     for (const listener of this.listeners) listener();
   }
 
-  addItemToCart(newItem) {
-    let item = this.state.cart.find(item => item.code === newItem.code);
+  addItemToCart(code) {
+    let item = this.state.cart.find(item => item.code === code);
+    item = item ? {...item , quantity: item.quantity + 1} : {...this.state.list.find(item => item.code === code) , quantity:  1};
 
-    item = item ? {...item , quantity: item.quantity + 1} : {...newItem , quantity:  1};
+    const newCart = [...this.state.cart.filter(item => item.code != code), {...item}];
+    const newTotalPrice = newCart.reduce((a, i) => a = a + i.price * i.quantity, 0);
 
     this.setState({
       ...this.state,
-      cart: [...this.state.cart.filter(item => item.code != newItem.code), {...item}],
+      cart: newCart,
+      goodsCount: newCart.length,
+      totalPrice: newTotalPrice,
     });
   }
 
   deleteItemFromCart(code) {
+    const newCart = this.state.cart.filter(item => item.code != code)
+    const newTotalPrice = newCart.reduce((a, i) => a = a + i.price * i.quantity, 0);
+
     this.setState({
       ...this.state,
-      cart: this.state.cart.filter(item => item.code != code)
+      cart: newCart,
+      goodsCount: newCart.length,
+      totalPrice: newTotalPrice,
     });
   }
 

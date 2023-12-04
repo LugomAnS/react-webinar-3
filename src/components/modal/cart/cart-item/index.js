@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { formatCost } from "../../../../utils";
 import './style.css';
 
-function ModalItem({item, onDeleteItemFromCart}) {
+function CartItem({item, onDeleteItemFromCart}) {
 
   const callbacks = {
     onDelete: (e) => {
@@ -25,7 +25,7 @@ function ModalItem({item, onDeleteItemFromCart}) {
   );
 }
 
-ModalItem.propTypes = {
+CartItem.propTypes = {
   item: PropTypes.shape({
     code: PropTypes.number,
     title: PropTypes.string,
@@ -35,8 +35,8 @@ ModalItem.propTypes = {
   onDeleteItemFromCart: PropTypes.func
 };
 
-ModalItem.defaultProps = {
+CartItem.defaultProps = {
   onDeleteItemFromCart: () => {}
 }
 
-export default React.memo(ModalItem);
+export default React.memo(CartItem);
