@@ -1,19 +1,23 @@
 .ModalLayout {
 	display: block;
-	position: fixed;
+	position: absolute;
 	z-index: 1;
 	left: 0;
 	top: 0;
 	width: 100%;
 	height: 100%;
-	overflow: auto;
+	display: flex;
+	justify-content: center;
+  overflow: auto;
 	background-color: rgba(0,0,0,0.7);
 }
 
 .ModalLayout-content {
-	max-width: 940px;
-	width: 80%;
-	margin: 17% auto 5% auto;
+  position: relative;
+	min-width: 50%;
+	width: 940px;
+  height: fit-content;
+  margin: auto;
 	border-radius: 10px;
 	overflow: auto;
 	background-color: white;

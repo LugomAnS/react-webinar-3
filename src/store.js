@@ -72,6 +72,7 @@ class Store {
   }
 
   cartSwitch() {
+    document.body.style.overflow = !this.state.isCart ? "hidden" : "auto"
     this.setState({
       ...this.state,
       isCart: !this.state.isCart,

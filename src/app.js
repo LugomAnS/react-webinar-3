@@ -3,7 +3,7 @@ import List from "./components/list";
 import Controls from "./components/controls";
 import Head from "./components/head";
 import PageLayout from "./components/page-layout";
-import ModalLayout from "./components/modal/layout";
+import ModalLayout from "./components/modal/modal-layout";
 import CartHead from "./components/modal/cart/cart-head";
 import CartList from "./components/modal/cart/cart-list";
 import CartFooter from './components/modal/cart/cart-footer';

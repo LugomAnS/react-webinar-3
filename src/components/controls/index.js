@@ -20,8 +20,8 @@ function Controls({goodsCount, totalPrice, onCartSwitch}) {
 }
 
 Controls.propTypes = {
-  goodsCount: PropTypes.number,
-  totalPrice: PropTypes.number,
+  goodsCount: PropTypes.number.isRequired,
+  totalPrice: PropTypes.number.isRequired,
   onCartSwitch: PropTypes.func
 };
 
