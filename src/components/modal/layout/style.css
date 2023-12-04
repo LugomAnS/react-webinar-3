@@ -12,9 +12,8 @@
 
 .ModalLayout-content {
 	max-width: 940px;
-  max-height: 60%;
 	width: 80%;
-	margin: 17% auto auto auto;
+	margin: 17% auto 5% auto;
 	border-radius: 10px;
 	overflow: auto;
 	background-color: white;
