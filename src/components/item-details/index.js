@@ -1,5 +1,6 @@
 import React from "react";
 import { numberFormat } from "../../utils";
+import PropTypes from "prop-types";
 import {cn as bem} from "@bem-react/classname";
 import './style.css';
 
@@ -22,6 +23,28 @@ function ItemDetails({item, onAdd}){
       </div>
     </div>
   )
+}
+
+ItemDetails.propTypes = {
+  item: PropTypes.shape({
+    _id: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    madeIn: PropTypes.shape({
+      title: PropTypes.string,
+      code: PropTypes.string
+    }),
+    category: PropTypes.shape({
+      title: PropTypes.string
+    }),
+    edition: PropTypes.number,
+    price: PropTypes.number
+  }),
+  onAdd: PropTypes.func,
+}
+
+ItemDetails.defaultProps = {
+  onAdd: () => {}
 }
 
 export default React.memo(ItemDetails);
