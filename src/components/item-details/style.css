@@ -1,0 +1,16 @@
+.ItemDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 0 40px;
+  font-size: 18px;
+}
+
+.ItemDetails-cell {
+  font-weight: 700;
+}
+
+.ItemDetails-price {
+  font-size: 24px;
+  font-weight: 700;
+}

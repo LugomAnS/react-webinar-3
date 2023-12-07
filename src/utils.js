@@ -33,3 +33,40 @@ export function codeGenerator(start = 0) {
 export function numberFormat(value, locale = 'ru-RU', options = {}) {
   return new Intl.NumberFormat(locale, options).format(value);
 }
+/**
+ * Список элементов для рендеринга пагинации
+ * @param currentPage {Number}
+ * @param totalPages {Number}
+ * @returns {Array};
+*/
+export function paginationList({currentPage, totalPages}) {
+  const range = (start, end) => {
+    let length = end - start + 1;
+    return Array.from({length: length}, (_ , i) => i + start);
+  };
+
+  if(totalPages <= 5) {
+    return range(1, totalPages)
+  };
+
+  const leftSiblingIndex = currentPage - 1;
+  const rightSiblingIndex = currentPage + 1;
+
+  const isLeftDots = leftSiblingIndex > 2;
+  const isRightDots = rightSiblingIndex <= totalPages - 2;
+
+  if(!isLeftDots && isRightDots) {
+    let leftRange = range(1, Math.max(currentPage + 1, 3));
+    return [...leftRange, "...", totalPages];
+  }
+
+  if(isLeftDots && !isRightDots) {
+    let rightRange = range(totalPages - Math.max(totalPages - currentPage + 2, 3) + 1, totalPages);
+    return [1, "...", ...rightRange];
+  }
+
+  if(isLeftDots && isRightDots) {
+    let middleRange = range(leftSiblingIndex, rightSiblingIndex);
+    return [1, "...", ...middleRange, "...", totalPages];
+  }
+}
