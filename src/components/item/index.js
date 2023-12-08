@@ -21,7 +21,7 @@ function Item(props) {
       </div>
       <div className={cn('actions')}>
         <div className={cn('price')}>{numberFormat(props.item.price)} ₽</div>
-        <button onClick={callbacks.onAdd}>Добавить</button>
+        <button onClick={callbacks.onAdd}>{props.buttonName}</button>
       </div>
     </div>
   );
@@ -33,6 +33,7 @@ Item.propTypes = {
     title: PropTypes.string,
     price: PropTypes.number
   }).isRequired,
+  buttonName: PropTypes.string,
   onAdd: PropTypes.func,
 };
 

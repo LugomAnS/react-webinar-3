@@ -5,26 +5,26 @@ import {numberFormat, plural} from "../../utils";
 import './style.css';
 import { Link } from "react-router-dom";
 
-function BasketTool({sum, amount, onOpen}) {
+function BasketTool({sum, amount, onOpen, language}) {
   const cn = bem('BasketTool');
   return (
     <div className={cn()}>
       <Link to="/" className={cn('main')}>
-        Главная
+        {language.buttons.main}
       </Link>
       <div>
-        <span className={cn('label')}>В корзине:</span>
+        <span className={cn('label')}>{language.titles.inCart}:</span>
         <span className={cn('total')}>
           {amount
             ? `${amount} ${plural(amount, {
-              one: 'товар',
-              few: 'товара',
-              many: 'товаров'
+              one: language.locale === "ru" ? 'товар' : 'product',
+              few: language.locale === "ru" ? 'товара' : 'products',
+              many: language.locale === "ru" ? 'товаров' : 'products'
             })} / ${numberFormat(sum)} ₽`
-            : `пусто`
+            : `${language.titles.empty}`
           }
         </span>
-        <button onClick={onOpen}>Перейти</button>
+        <button onClick={onOpen}>{language.buttons.cart}</button>
       </div>
     </div>
   );
@@ -33,7 +33,18 @@ function BasketTool({sum, amount, onOpen}) {
 BasketTool.propTypes = {
   onOpen: PropTypes.func.isRequired,
   sum: PropTypes.number,
-  amount: PropTypes.number
+  amount: PropTypes.number,
+  language: PropTypes.shape({
+    locale: PropTypes.string,
+    titles: PropTypes.shape({
+      inCart: PropTypes.string,
+      empty: PropTypes.string,
+    }),
+    buttons: PropTypes.shape({
+      main: PropTypes.string,
+      cart: PropTypes.string,
+    }),
+  })
 };
 
 BasketTool.defaultProps = {

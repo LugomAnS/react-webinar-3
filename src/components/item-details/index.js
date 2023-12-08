@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {cn as bem} from "@bem-react/classname";
 import './style.css';
 
-function ItemDetails({item, onAdd}){
+function ItemDetails({item, onAdd, buttonName}){
   const cn = bem('ItemDetails');
 
   const callbacks = {
@@ -19,7 +19,7 @@ function ItemDetails({item, onAdd}){
       <div>{"Год выпуска: "}<span className={cn("cell")}>{item.edition}</span></div>
       <div className={cn("price")}>{"Цена: "}{numberFormat(item.price)}{" ₽"}</div>
       <div>
-        <button onClick={callbacks.addToBasket}>Добавить</button>
+        <button onClick={callbacks.addToBasket}>{buttonName}</button>
       </div>
     </div>
   )
@@ -40,6 +40,7 @@ ItemDetails.propTypes = {
     edition: PropTypes.number,
     price: PropTypes.number
   }),
+  buttonName: PropTypes.string,
   onAdd: PropTypes.func,
 }
 
