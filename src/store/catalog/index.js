@@ -11,36 +11,49 @@ class Catalog extends StoreModule {
   initState() {
     return {
       list: [],
+      isLoading: false,
       pagination: {
-        itemsPerPage: 0,
+        itemsPerPage: 10,
         currentPage: 0,
         totalPages: 0,
-        list: []
       }
     }
   }
 
   async load() {
+    this.setState({
+      ...this.getState(),
+      isLoading: true,
+    });
     const response = await fetch('/api/v1/articles?limit=10&skip=0&fields=items(_id, title, price),count');
     const json = await response.json();
-    const list = paginationList({currentPage: 1, totalPages: Math.ceil(json.result.count / 10)});
     this.setState({
       ...this.getState(),
       list: json.result.items,
-      pagination: { itemsPerPage: 10, currentPage: 1, totalPages: Math.ceil(json.result.count / 10), list: list }
+      pagination: { itemsPerPage: 10,
+                    currentPage: 1,
+                    totalPages: Math.ceil(json.result.count / this.getState().pagination.itemsPerPage)},
+      isLoading: false,
     }, 'Загружены товары из АПИ');
   }
 
   async loadPage(pageNumber) {
-    const response = await fetch(`/api/v1/articles?
-      limit=${this.getState().pagination.itemsPerPage}&skip=${(pageNumber - 1) * 10}&fields=items(_id, title, price),count`);
+    this.setState({
+      ...this.getState(),
+      isLoading: true,
+    });
+
+    const response = await fetch(`/api/v1/articles?limit=${this.getState().pagination.itemsPerPage}
+        &skip=${(pageNumber - 1) * this.getState().pagination.itemsPerPage}&fields=items(_id, title, price),count`);
 
     const json = await response.json();
-    const list = paginationList({currentPage: pageNumber, totalPages: Math.ceil(json.result.count / 10)});
     this.setState({
       ...this.getState(),
       list: json.result.items,
-      pagination: {itemsPerPage: 10, currentPage: pageNumber, totalPages: Math.ceil(json.result.count / 10), list: list}
+      pagination: { itemsPerPage: 10,
+                    currentPage: pageNumber,
+                    totalPages: Math.ceil(json.result.count / this.getState().pagination.itemsPerPage) },
+      isLoading: false
     }, `Загружены данные из АПИ, страница - ${pageNumber}`);
   }
 }

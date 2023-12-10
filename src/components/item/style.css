@@ -25,7 +25,7 @@
 }
 
 .Item-title:hover a {
-  border-bottom: 1px solid black;
+  text-decoration: underline;
 }
 
 .Item-actions {

@@ -7,6 +7,10 @@ import List from "../../components/list";
 import useStore from "../../store/use-store";
 import useSelector from "../../store/use-selector";
 import Pagination from '../../components/pagination/pagination';
+import Section from '../../components/section';
+import NavigationBar from '../../components/navigation-bar';
+import NavigationItem from '../../components/navigation-item';
+import SpinnerLayout from '../../components/spinner-layout';
 
 function Main() {
 
@@ -22,6 +26,7 @@ function Main() {
     sum: state.basket.sum,
     pagination: state.catalog.pagination,
     language: state.settings.language,
+    loading: state.catalog.isLoading,
   }));
 
   const callbacks = {
@@ -37,15 +42,23 @@ function Main() {
 
   const renders = {
     item: useCallback((item) => {
-      return <Item item={item} onAdd={callbacks.addToBasket} buttonName={select.language.buttons.add}/>
+      return <Item item={item} onAdd={callbacks.addToBasket}
+                   buttonName={select.language.buttons.add} route={`/details/${item._id}`}/>
     }, [callbacks.addToBasket, select.language]),
   };
+
+  if(select.loading) return <SpinnerLayout />
 
   return (
     <PageLayout>
       <Head title={select.language.titles.mainHead} locale={select.language.locale} changeLanguage={callbacks.changeLanguage}/>
-      <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
-                  sum={select.sum} language={select.language}/>
+      <Section>
+        <NavigationBar>
+          <NavigationItem title={select.language.buttons.main} route={"/"} />
+        </NavigationBar>
+        <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
+                    sum={select.sum} language={select.language}/>
+      </Section>
       <List list={select.list} renderItem={renders.item}/>
       <Pagination pagination={select.pagination}
                   onLoad={callbacks.loadGoodsPage} />

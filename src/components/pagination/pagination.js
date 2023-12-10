@@ -1,10 +1,18 @@
 import PropTypes from 'prop-types';
 import './style.css';
+import { useEffect, useState } from 'react';
+import { paginationList } from '../../utils';
 
 function Pagination({pagination, onLoad}) {
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    setList(paginationList(pagination.currentPage, pagination.totalPages));
+  }, [pagination])
+
   return (
     <div className="Pagination">
-      {pagination.list.map((item, index) => {
+      {list.map((item, index) => {
         if(item === "...")
           return <div key={index}>{item}</div>
 
@@ -21,7 +29,7 @@ function Pagination({pagination, onLoad}) {
 Pagination.propsTypes = {
   pagination: PropTypes.shape({
     currentPage: PropTypes.number,
-    list: PropTypes.arrayOf(PropTypes.number),
+    totalPages: PropTypes.number,
   }),
   onLoad: PropTypes.func,
 }

@@ -8,6 +8,7 @@ class Details extends StoreModule {
 
   initState() {
     return {
+      isLoading: false,
       item: {
         _id: "",
         title: "",
@@ -26,11 +27,17 @@ class Details extends StoreModule {
   }
 
   async loadDetails(id) {
+    this.setState({
+      ...this.getState(),
+      isLoading: true,
+    })
+
     const response = await fetch(`/api/v1/articles/${id}?fields=title,description,category(title),madeIn(title,code),edition,price`);
     const json = await response.json();
     this.setState({
       ...this.getState(),
-      item: json.result
+      item: json.result,
+      isLoading: false,
     }, `Загрузка из АПИ детализации по товару - ${id}`);
   }
 }

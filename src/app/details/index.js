@@ -6,6 +6,10 @@ import useStore from "../../store/use-store";
 import useSelector from "../../store/use-selector";
 import { useParams } from "react-router-dom";
 import ItemDetails from "../../components/item-details";
+import Section from '../../components/section';
+import NavigationBar from '../../components/navigation-bar';
+import NavigationItem from '../../components/navigation-item';
+import SpinnerLayout from '../../components/spinner-layout';
 
 function Details() {
   const {id} = useParams();
@@ -19,7 +23,8 @@ function Details() {
     amount: state.basket.amount,
     sum: state.basket.sum,
     item: state.details.item,
-    language: state.settings.language
+    language: state.settings.language,
+    loading: state.details.isLoading,
   }));
 
   const callbacks = {
@@ -28,11 +33,18 @@ function Details() {
     changeLanguage: useCallback(locale => store.actions.settings.changeLanguage(locale), [store]),
   }
 
+  if(select.loading) return <SpinnerLayout />
+
   return (
     <PageLayout>
       <Head title={select.item.title} locale={select.language.locale} changeLanguage={callbacks.changeLanguage}/>
-      <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
-                  sum={select.sum} language={select.language}/>
+      <Section>
+        <NavigationBar>
+          <NavigationItem title={select.language.buttons.main} route={"/"} />
+        </NavigationBar>
+        <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
+                    sum={select.sum} language={select.language}/>
+      </Section>
       <ItemDetails item={select.item} onAdd={callbacks.addToBasket} buttonName={select.language.buttons.add}/>
     </PageLayout>
   )

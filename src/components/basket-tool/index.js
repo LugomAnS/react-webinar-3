@@ -3,29 +3,23 @@ import PropTypes from 'prop-types';
 import {cn as bem} from '@bem-react/classname';
 import {numberFormat, plural} from "../../utils";
 import './style.css';
-import { Link } from "react-router-dom";
 
 function BasketTool({sum, amount, onOpen, language}) {
   const cn = bem('BasketTool');
   return (
     <div className={cn()}>
-      <Link to="/" className={cn('main')}>
-        {language.buttons.main}
-      </Link>
-      <div>
-        <span className={cn('label')}>{language.titles.inCart}:</span>
-        <span className={cn('total')}>
-          {amount
-            ? `${amount} ${plural(amount, {
-              one: language.locale === "ru" ? 'товар' : 'product',
-              few: language.locale === "ru" ? 'товара' : 'products',
-              many: language.locale === "ru" ? 'товаров' : 'products'
-            })} / ${numberFormat(sum)} ₽`
-            : `${language.titles.empty}`
-          }
-        </span>
-        <button onClick={onOpen}>{language.buttons.cart}</button>
-      </div>
+      <span className={cn('label')}>{language.titles.inCart}:</span>
+      <span className={cn('total')}>
+        {amount
+          ? `${amount} ${plural(amount, {
+            one: language.locale === "ru" ? 'товар' : 'product',
+            few: language.locale === "ru" ? 'товара' : 'products',
+            many: language.locale === "ru" ? 'товаров' : 'products'
+          })} / ${numberFormat(sum)} ₽`
+          : `${language.titles.empty}`
+        }
+      </span>
+      <button onClick={onOpen}>{language.buttons.cart}</button>
     </div>
   );
 }
@@ -41,7 +35,6 @@ BasketTool.propTypes = {
       empty: PropTypes.string,
     }),
     buttons: PropTypes.shape({
-      main: PropTypes.string,
       cart: PropTypes.string,
     }),
   })

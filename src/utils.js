@@ -39,7 +39,7 @@ export function numberFormat(value, locale = 'ru-RU', options = {}) {
  * @param totalPages {Number}
  * @returns {Array};
 */
-export function paginationList({currentPage, totalPages}) {
+export function paginationList(currentPage, totalPages) {
   const range = (start, end) => {
     let length = end - start + 1;
     return Array.from({length: length}, (_ , i) => i + start);
