@@ -45,6 +45,10 @@ export function paginationList(currentPage, totalPages) {
     return Array.from({length: length}, (_ , i) => i + start);
   };
 
+  if(totalPages === 1) {
+    return [];
+  }
+
   if(totalPages <= 5) {
     return range(1, totalPages)
   };
