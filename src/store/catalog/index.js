@@ -13,12 +13,16 @@ class CatalogState extends StoreModule {
     return {
       list: [],
       params: {
+        category: "*",
         page: 1,
         limit: 10,
         sort: 'order',
-        query: ''
+        query: '',
       },
       count: 0,
+      categoryList: [
+        { value: "*", title: "Все"},
+      ],
       waiting: false
     }
   }
@@ -32,11 +36,19 @@ class CatalogState extends StoreModule {
   async initParams(newParams = {}) {
     const urlParams = new URLSearchParams(window.location.search);
     let validParams = {};
+    if (urlParams.has('category')) validParams.category = urlParams.get('category');
     if (urlParams.has('page')) validParams.page = Number(urlParams.get('page')) || 1;
     if (urlParams.has('limit')) validParams.limit = Math.min(Number(urlParams.get('limit')) || 10, 50);
     if (urlParams.has('sort')) validParams.sort = urlParams.get('sort');
     if (urlParams.has('query')) validParams.query = urlParams.get('query');
+
+    const categories = await this.loadCategories();
     await this.setParams({...this.initState().params, ...validParams, ...newParams}, true);
+
+    this.setState({
+      ...this.getState(),
+      categoryList: [...categories]
+    })
   }
 
   /**
@@ -84,6 +96,10 @@ class CatalogState extends StoreModule {
       'search[query]': params.query
     };
 
+    if(this.getState().params.category !== "*") {
+      apiParams['search[category]'] = this.getState().params.category;
+    }
+
     const response = await fetch(`/api/v1/articles?${new URLSearchParams(apiParams)}`);
     const json = await response.json();
     this.setState({
@@ -92,6 +108,40 @@ class CatalogState extends StoreModule {
       count: json.result.count,
       waiting: false
     }, 'Загружен список товаров из АПИ');
+
+    await this.loadCategories();
+  }
+
+  async loadCategories() {
+    const response = await fetch('/api/v1/categories?fields=_id,title,parent(_id)&limit=*');
+    const json = await response.json();
+    const list = json.result.items;
+
+    const categories = this.createHierarchy(list, null, "");
+    categories.unshift({ value: "*", title: "Все"});
+    return categories;
+  }
+
+  createHierarchy(list, parent, prefix = '') {
+    let arr = [];
+
+    for(let i = 0; i < list.length; i++) {
+      if(list[i].parent === parent || list[i].parent?._id === parent) {
+        const item = {
+          value: list[i]._id,
+          title: prefix + list[i].title,
+        }
+        arr.push(item);
+      }
+    }
+
+    let result = [];
+    for(let i = 0; i < arr.length; i++) {
+      result.push(arr[i]);
+      result = result.concat(this.createHierarchy(list, arr[i].value, prefix + "- "));
+    }
+
+    return result;
   }
 }
 
