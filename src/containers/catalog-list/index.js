@@ -21,6 +21,7 @@ function CatalogList() {
     query: state.catalog.params.query,
     count: state.catalog.count,
     waiting: state.catalog.waiting,
+    category: state.catalog.params.category
   }));
 
   const callbacks = {
@@ -31,12 +32,13 @@ function CatalogList() {
     // Генератор ссылки для пагинатора
     makePaginatorLink: useCallback((page) => {
       return `?${new URLSearchParams({
+        category: select.category,
         page,
         limit: select.limit,
         sort: select.sort,
         query: select.query
       })}`;
-    }, [select.limit, select.sort, select.query])
+    }, [select.limit, select.sort, select.query, select.category])
   }
 
   const {t} = useTranslate();

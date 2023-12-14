@@ -71,7 +71,6 @@ class CatalogState extends StoreModule {
    */
   async setParams(newParams = {}, replaceHistory = false) {
     const params = {...this.getState().params, ...newParams};
-
     // Установка новых параметров и признака загрузки
     this.setState({
       ...this.getState(),
@@ -81,6 +80,7 @@ class CatalogState extends StoreModule {
 
     // Сохранить параметры в адрес страницы
     let urlSearch = new URLSearchParams(params).toString();
+
     const url = window.location.pathname + '?' + urlSearch + window.location.hash;
     if (replaceHistory) {
       window.history.replaceState({}, '', url);
@@ -96,8 +96,8 @@ class CatalogState extends StoreModule {
       'search[query]': params.query
     };
 
-    if(this.getState().params.category !== "*") {
-      apiParams['search[category]'] = this.getState().params.category;
+    if(params.category !== "*") {
+      apiParams['search[category]'] = params.category;
     }
 
     const response = await fetch(`/api/v1/articles?${new URLSearchParams(apiParams)}`);
@@ -108,8 +108,6 @@ class CatalogState extends StoreModule {
       count: json.result.count,
       waiting: false
     }, 'Загружен список товаров из АПИ');
-
-    await this.loadCategories();
   }
 
   async loadCategories() {
