@@ -25,14 +25,18 @@ class ArticleState extends StoreModule {
     });
 
     try {
-      const response = await fetch(`/api/v1/articles/${id}99?fields=*,madeIn(title,code),category(title)`);
+      const response = await fetch(`/api/v1/articles/${id}?fields=*,madeIn(title,code),category(title)`);
       const json = await response.json();
 
-      // Товар загружен успешно
-      this.setState({
-        data: json.result.error.message,
-        waiting: false
-      }, 'Загружен товар из АПИ');
+      if(response.ok) {
+        // Товар загружен успешно
+        this.setState({
+          data: json.result,
+          waiting: false
+        }, 'Загружен товар из АПИ');
+      } else {
+        throw json.error.message;
+      }
     } catch (e) {
       // Ошибка при загрузке
       // @todo В стейт можно положить информацию об ошибке
@@ -40,7 +44,7 @@ class ArticleState extends StoreModule {
         data: {},
         waiting: false,
         error: e,
-      }, "Ошибка загрузки товара");
+      }, `Ошибка загрузки товара - ${e}`);
     }
   }
 }
