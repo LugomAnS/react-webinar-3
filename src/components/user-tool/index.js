@@ -24,6 +24,7 @@ function UserTool(props) {
 
 UserTool.propTypes = {
   name: PropTypes.string,
+  link: PropTypes.string,
   logout: PropTypes.func,
   login: PropTypes.func,
   t: PropTypes.func

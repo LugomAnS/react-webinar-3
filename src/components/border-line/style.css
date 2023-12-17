@@ -1,0 +1,16 @@
+.BorderLine {
+  width: 100%;
+  border: 0px solid #DCDCDC;
+}
+
+.BorderLine_width_thin {
+  border-bottom-width: 1px;
+}
+
+.BorderLine_width_medium {
+  border-bottom-width: 3px;
+}
+
+.BorderLine_width_bold {
+  border-bottom-width: 5px;
+}

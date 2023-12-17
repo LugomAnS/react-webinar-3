@@ -20,6 +20,16 @@ function App() {
     await store.actions.user.initUser();
   }, [], true)
 
+  const select = useSelector(state => ({
+    auth: state.user.auth,
+    id: state.user.user._id,
+    token: state.user.token,
+  }))
+
+  useEffect(() => {
+    store.actions.profile.setParams(select.id, select.token);
+  }, [select.auth])
+
   const activeModal = useSelector(state => state.modals.name);
 
   return (

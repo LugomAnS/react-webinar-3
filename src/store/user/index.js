@@ -8,6 +8,7 @@ class UserState extends StoreModule {
       token: null,
       serverError: null,
       waiting: false,
+      auth: false,
     }
   }
 
@@ -15,6 +16,13 @@ class UserState extends StoreModule {
     if(localStorage.getItem("YLAB_token") !== null) {
       await this.tokenAuthorization();
     }
+  }
+
+  resetErrors() {
+    this.setState(({
+      ...this.getState(),
+      serverError: null,
+    }))
   }
 
   /*
@@ -32,7 +40,7 @@ class UserState extends StoreModule {
     })
 
     try {
-      const response = await fetch('/api/v1/users/sign?fields=email,profile(name,phone)', {
+      const response = await fetch('/api/v1/users/sign?fields=profile(name)', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,6 +56,7 @@ class UserState extends StoreModule {
           token: json.result.token,
           waiting: false,
           serverError: null,
+          auth: true,
         }, "Успешная авторизация по логину и паролю");
         localStorage.setItem("YLAB_token", this.getState().token);
       } else {
@@ -55,13 +64,15 @@ class UserState extends StoreModule {
           ...this.getState(),
           serverError: json.error.data.issues[0].message,
           waiting: false,
+          auth: false,
         }, "Ошибка авторизации")
       }
     } catch (error) {
-      console.log(error);
       this.setState({
         ...this.getState(),
         serverError: error,
+        waiting: false,
+        auth: false,
       })
     }
   }
@@ -73,10 +84,11 @@ class UserState extends StoreModule {
     this.setState({
       ...this.getState(),
       waiting: true,
-    })
+      token: localStorage.getItem("YLAB_token"),
+    }, 'Установка токена и ожидание авторизации по токену')
 
     try {
-      const response = await fetch('/api/v1/users/self?fields=email,profile(name,phone)', {
+      const response = await fetch('/api/v1/users/self?fields=profile(name)', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -92,19 +104,22 @@ class UserState extends StoreModule {
           token: localStorage.getItem("YLAB_token"),
           serverError: null,
           waiting: false,
+          auth: true,
         }, "Успешная авторизация по токену");
       } else {
         this.setState({
           ...this.getState(),
           serverError: json.error.data.issues[0].message,
           waiting: false,
+          auth: false,
         }, "Ошибка авторизации по токену")
       }
     } catch (error) {
-      console.log(error);
       this.setState({
         ...this.getState(),
         serverError: error,
+        waiting: false,
+        auth: false,
       })
     }
   }
@@ -132,6 +147,7 @@ class UserState extends StoreModule {
       user: {},
       token: null,
       waiting: false,
+      auth: false,
     }, "Выход пользователя из учетной записи");
   }
 

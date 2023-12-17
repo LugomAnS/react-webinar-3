@@ -10,39 +10,33 @@ import ProfileCard from "../../components/profile-card";
 import useSelector from "../../hooks/use-selector";
 import useInit from "../../hooks/use-init";
 import useStore from "../../hooks/use-store";
-import { useNavigate } from "react-router-dom";
+import Authorization from "../../containers/authorization";
 
 function Profile() {
   const store = useStore();
-  const navigate = useNavigate();
 
   useInit(() => {
-    store.actions.user.tokenAuthorization()
-  }, [], true)
+    console.log("aut");
+    console.log(store);
+    store.actions.profile.loadProfile();
+  }, [])
 
   const select = useSelector(state => ({
-    user: state.user.user,
-    waiting: state.user.waiting,
-    error: state.user.serverError,
-    token: state.user.token,
+    profile: state.profile.profile,
+    waiting: state.profile.waiting,
   }));
-
-  useEffect(() => {
-    if(select.error || select.token === null) {
-      navigate('/login');
-    }
-  }, [select])
 
   const {t} = useTranslate();
   return (
     <PageLayout>
+      <Authorization />
       <UserBar />
       <Head title={t('title')}>
         <LocaleSelect />
       </Head>
       <Navigation />
       <Spinner active={select.waiting}>
-        <ProfileCard t={t} user={select.user}/>
+        <ProfileCard t={t} profile={select.profile}/>
       </Spinner>
     </PageLayout>
   );
