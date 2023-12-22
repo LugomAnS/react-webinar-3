@@ -5,7 +5,7 @@ import './style.css';
 function CommentsRequest(props) {
   return (
     <div className="CommentsRequest">
-      <div className="CommentsRequest-line"><Link to={props.link.path} state={{back: props.link.from}}>Войдите</Link>{`, ${props.title}`}</div>
+        <Link to={props.link.path} state={{back: props.link.from}}>Войдите</Link><span>{`, ${props.title}`}</span>
     </div>
   );
 }

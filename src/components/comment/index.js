@@ -7,9 +7,9 @@ function Comment(props) {
   const cn = bem("Comment");
   // заглушка
   //@todo привести дату в формат по дизайну
-  const date = new Date(props.item.dateCreate);
-  const options = { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-  const formattedDate = date.toLocaleString('ru-RU', options);
+  // const date = new Date(props.item.dateCreate);
+  // const options = { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+  // const formattedDate = date.toLocaleString('ru-RU', options);
 
   const callbacks = {
     onReply: () => props.reply(props.item._id),
@@ -19,7 +19,7 @@ function Comment(props) {
     <div className={cn()}>
       <div className={cn('title')}>
         <div className={cn(user)}>{props.item.author.profile.name}</div>
-        <div className={cn('date')}>{formattedDate}</div>
+        <div className={cn('date')}>{props.item.dateCreate}</div>
       </div>
       <div className={cn('text')}>{props.item.text}</div>
       <button className={cn('button')} onClick={callbacks.onReply}>Ответить</button>

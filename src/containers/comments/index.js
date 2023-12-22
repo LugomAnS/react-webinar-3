@@ -1,7 +1,7 @@
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import Spinner from "../../components/spinner";
 import useSelector from "../../hooks/use-selector";
-import CommentsList from "../../components/comments-list";
+import CommentItem from "../../components/comment-item";
 import CommentsTitle from "../../components/comments-title";
 import CommentForm from "../../components/comment-form";
 import commentAction from '../../store-redux/comment/actions';
@@ -11,6 +11,8 @@ import { useDispatch, useSelector as useSelectorRedux} from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import listToTree from '../../utils/list-to-tree/index';
 import FullLayout from '../../components/full-layout';
+import parseDate from "../../utils/date-format";
+import MiddleLayout from "../../components/middle-layout";
 
 function Comments() {
   const dispatch = useDispatch();
@@ -64,27 +66,30 @@ function Comments() {
     cancel: useCallback(() => setReplyId(id), [])
   }
 
-  console.log(listToTree(!!selectRedux.list.items ? selectRedux.list.items : []));
-
   return (
     <Spinner active={selectRedux.listLoading}>
       <CommentsTitle count={selectRedux.list.count || 0} />
-      {selectRedux.list?.items?.length > 0 && <CommentsList data={listToTree(selectRedux.list.items)[0].children}
-                                                  reply={callbacks.reply} replyId={replyId}
-                                                  send={callbacks.uploadComment}
-                                                  cancel={callbacks.cancel}
-                                                  link={link} exists={select.exists}
-                                                  selfId={select.selfId}
-                                    />}
-      {id === replyId &&
-        <FullLayout>
-          <CommentForm  send={callbacks.uploadComment}
-                        titleForm={"комментарий"}
-                        titleAuth={"что бы иметь возможность комментировать"}
-                        link={link} exists={select.exists}
-                        />
-        </FullLayout>
+
+      {selectRedux.list?.items?.length > 0 &&
+        <MiddleLayout>
+        {listToTree(parseDate(selectRedux.list.items, 'dateCreate'))[0].children.map(item =>
+        <CommentItem  key={item._id} item={item} replyId={replyId} selfId={select.selfId}
+                      reply={callbacks.reply} send={callbacks.uploadComment} cancel={callbacks.cancel}
+                      link={link} exists={select.exists} />)}
+        </MiddleLayout>
       }
+
+      <FullLayout>
+        <div>
+          {id === replyId &&
+            <CommentForm  send={callbacks.uploadComment}
+                          titleForm={"комментарий"}
+                          titleAuth={"что бы иметь возможность комментировать"}
+                          link={link} exists={select.exists}
+                          />
+          }
+        </div>
+      </FullLayout>
     </Spinner>
   );
 }

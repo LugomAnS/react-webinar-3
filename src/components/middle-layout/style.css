@@ -1,9 +1,5 @@
-.CommentsList {
+.MiddleLayout {
   padding: 0 40px;
   display: flex;
   flex-direction: column;
-}
-
-.CommentsList-child {
-  padding-left: 20px;
 }
