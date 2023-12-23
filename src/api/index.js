@@ -24,7 +24,8 @@ class APIService {
     if (!url.match(/^(http|\/\/)/)) url = this.config.baseUrl + url;
     const res = await fetch(url, {
       method,
-      headers: {...this.defaultHeaders, ...headers},
+      headers: {...this.defaultHeaders, ...headers,
+        'Accept-Language': `${this.services.i18n.lang}-${this.services.i18n.lang.toUpperCase()}`},
       ...options,
     });
     return {data: await res.json(), status: res.status, headers: res.headers};
