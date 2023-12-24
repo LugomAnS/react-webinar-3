@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import Spinner from "../../components/spinner";
 import useSelector from "../../hooks/use-selector";
 import CommentItem from "../../components/comment-item";
@@ -20,6 +20,7 @@ function Comments() {
   const {id} = useParams();
   const [replyId, setReplyId] = useState(id);
   const {t} = useTranslate();
+  const [commentsList, setCommentsList] = useState([]);
 
   useInit(() => {
     dispatch(commentsListAction.loadList(id));
@@ -31,6 +32,7 @@ function Comments() {
   }));
 
   const selectRedux = useSelectorRedux(state => ({
+    commentWait: state.comment.waiting,
     comData: state.comment.data,
     error: state.comment.error,
     list: state.commentsList.list,
@@ -46,27 +48,42 @@ function Comments() {
   const callbacks = {
     // отправка комментария
     uploadComment: useCallback(data => {
-      const comment = {
-        _id: "",
-        text: data,
-        parent: {
-          _id: replyId,
-          _type: id === replyId ? "article" : "comment",
+      if(!!data.trim()) {
+        const comment = {
+          _id: "",
+          text: data,
+          parent: {
+            _id: replyId,
+            _type: id === replyId ? "article" : "comment",
+          }
         }
+        dispatch(commentAction.upload(comment));
+        setReplyId(id);
       }
-      dispatch(commentAction.upload(comment));
-      setReplyId(id);
-      dispatch(commentsListAction.loadList(id));
     }, [replyId]),
 
     // выбор кому отвечать
-    reply: useCallback(id => {
+    reply: useCallback((id) => {
       setReplyId(id);
+      const item =  document.getElementById(id);
+      item?.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
     }, []),
 
     // отмена ответа
     cancel: useCallback(() => setReplyId(id), [])
   }
+
+  useEffect(() => {
+    if(selectRedux.list?.items?.length > 0)
+      setCommentsList(listToTree(parseDate(selectRedux.list.items, 'dateCreate'))[0].children);
+  }, [selectRedux.list])
+
+  useEffect(() => {
+    if(!selectRedux.commentWait && !!selectRedux.comData) {
+      dispatch({type: "commentsList/add-comment", payload: {data: selectRedux.comData}});
+      dispatch({type: "comment/reset"});
+    }
+  }, [selectRedux.comData])
 
   return (
     <Spinner active={selectRedux.listLoading}>
@@ -74,10 +91,10 @@ function Comments() {
 
       {selectRedux.list?.items?.length > 0 &&
         <MiddleLayout>
-        {listToTree(parseDate(selectRedux.list.items, 'dateCreate'))[0].children.map(item =>
+        {commentsList.map(item =>
         <CommentItem  key={item._id} item={item} replyId={replyId} selfId={select.selfId}
                       reply={callbacks.reply} send={callbacks.uploadComment} cancel={callbacks.cancel}
-                      link={link} exists={select.exists} t={t}/>)}
+                      link={link} exists={select.exists} t={t} depth={0} scroll={scroll} />)}
         </MiddleLayout>
       }
 

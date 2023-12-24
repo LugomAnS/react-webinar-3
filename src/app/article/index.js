@@ -14,9 +14,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import shallowequal from 'shallowequal';
 import articleActions from '../../store-redux/article/actions';
 import Comments from '../../containers/comments';
+import useServices from '../../hooks/use-services';
 
 function Article() {
   const store = useStore();
+  const services = useServices();
 
   const dispatch = useDispatch();
   // Параметры из пути /articles/:id
@@ -26,7 +28,7 @@ function Article() {
   useInit(() => {
     //store.actions.article.load(params.id);
     dispatch(articleActions.load(params.id));
-  }, [params.id]);
+  }, [params.id, services.i18n.lang]);
 
   const select = useSelector(state => ({
     article: state.article.data,

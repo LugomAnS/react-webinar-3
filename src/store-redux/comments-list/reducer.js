@@ -17,6 +17,11 @@ function reducer(state = initialState, action) {
     case "commentsList/load-error":
       return {...state, waiting: false, error: action.payload.data };
 
+    case "commentsList/add-comment":
+      const newList = {...state.list};
+      newList.items.push(action.payload.data);
+      newList.count++;
+      return {...state, list: {...newList}};
     default:
       return state;
   }
