@@ -21,7 +21,7 @@ class CatalogState extends StoreModule {
         category: ''
       },
       count: 0,
-      waiting: false
+      waiting: false,
     }
   }
 
@@ -40,6 +40,8 @@ class CatalogState extends StoreModule {
     if (urlParams.has('query')) validParams.query = urlParams.get('query');
     if (urlParams.has('category')) validParams.category = urlParams.get('category');
     await this.setParams({...this.initState().params, ...validParams, ...newParams}, true);
+
+    this.services.i18n.subscribe(() =>this.setParams());
   }
 
   /**

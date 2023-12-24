@@ -13,23 +13,24 @@ function CommentItem(props) {
 
   return (
     <div>
-      <Comment item={props.item} reply={callbacks.onReply} selfId={props.selfId} />
+      <Comment item={props.item} reply={callbacks.onReply} selfId={props.selfId} t={props.t}/>
       <div className="CommentItem-child">
         {props.item.children.length > 0 && props.item.children.map(item =>
           <CommentItem key={item._id} item={item} reply={callbacks.onReply}
                        replyId={props.replyId} send={callbacks.onSend}
                        link={props.link} exists={props.exists}
-                       cancel={callbacks.onCancel} selfId={props.selfId}
+                       cancel={callbacks.onCancel} selfId={props.selfId} t={props.t}
           />
         )}
       </div>
       {props.replyId === props.item._id &&
       <div className="CommentItem-child">
-        <CommentForm titleForm={"ответ"} titleAuth={"что бы иметь возможность ответить."}
+        <CommentForm titleForm={props.t('comments.answer')} titleAuth={props.t('comments.answerpos')}
                                                         send={callbacks.onSend}
                                                         cancel={callbacks.onCancel}
                                                         link={props.link}
-                                                        exists={props.exists}/>
+                                                        exists={props.exists}
+                                                        t={props.t}/>
       </div>}
     </div>
   );
@@ -49,6 +50,7 @@ CommentItem.propTypes = {
     }),
     children: PropTypes.array,
   }),
+  t: PropTypes.func,
   cancel: PropTypes.func,
   reply: PropTypes.func
 };

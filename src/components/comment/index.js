@@ -22,7 +22,7 @@ function Comment(props) {
         <div className={cn('date')}>{props.item.dateCreate}</div>
       </div>
       <div className={cn('text')}>{props.item.text}</div>
-      <button className={cn('button')} onClick={callbacks.onReply}>Ответить</button>
+      <button className={cn('button')} onClick={callbacks.onReply}>{props.t('comments.reply')}</button>
     </div>
   );
 }
@@ -39,10 +39,12 @@ Comment.propTypes = {
       })
     })
   }),
-  reply: PropTypes.func
+  reply: PropTypes.func,
+  t: PropTypes.func,
 };
 
 Comment.defaultProps = {
+  t: () => {},
   reply: () => {},
 };
 

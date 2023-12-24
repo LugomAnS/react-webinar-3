@@ -13,11 +13,13 @@ import listToTree from '../../utils/list-to-tree/index';
 import FullLayout from '../../components/full-layout';
 import parseDate from "../../utils/date-format";
 import MiddleLayout from "../../components/middle-layout";
+import useTranslate from "../../hooks/use-translate";
 
 function Comments() {
   const dispatch = useDispatch();
   const {id} = useParams();
   const [replyId, setReplyId] = useState(id);
+  const {t} = useTranslate();
 
   useInit(() => {
     dispatch(commentsListAction.loadList(id));
@@ -68,14 +70,14 @@ function Comments() {
 
   return (
     <Spinner active={selectRedux.listLoading}>
-      <CommentsTitle count={selectRedux.list.count || 0} />
+      <CommentsTitle count={selectRedux.list.count || 0} t={t}/>
 
       {selectRedux.list?.items?.length > 0 &&
         <MiddleLayout>
         {listToTree(parseDate(selectRedux.list.items, 'dateCreate'))[0].children.map(item =>
         <CommentItem  key={item._id} item={item} replyId={replyId} selfId={select.selfId}
                       reply={callbacks.reply} send={callbacks.uploadComment} cancel={callbacks.cancel}
-                      link={link} exists={select.exists} />)}
+                      link={link} exists={select.exists} t={t}/>)}
         </MiddleLayout>
       }
 
@@ -83,9 +85,10 @@ function Comments() {
         <div>
           {id === replyId &&
             <CommentForm  send={callbacks.uploadComment}
-                          titleForm={"комментарий"}
-                          titleAuth={"что бы иметь возможность комментировать"}
+                          titleForm={t('comments.comment')}
+                          titleAuth={t('comments.commentpos')}
                           link={link} exists={select.exists}
+                          t={t}
                           />
           }
         </div>
