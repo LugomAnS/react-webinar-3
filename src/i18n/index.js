@@ -5,13 +5,32 @@ class I18nService {
   constructor(services, config={}) {
     this.services = services,
     this.config = config,
+    this.listeners = [],
     this.lang = 'ru'
+  }
+
+  /**
+  * Подписка слушателя на изменения состояния
+  * @param listener {Function}
+  * @returns {Function} Функция отписки
+  */
+  subscribe(listener) {
+    this.listeners.push(listener);
+    // Возвращается функция для удаления добавленного слушателя
+    return () => {
+      this.listeners = this.listeners.filter(item => item !== listener);
+    }
   }
 
   // установка языка
   setLang(lang) {
     this.lang = lang;
-    //this.services = {...this.services, _i18n: this};
+    // Вызываем всех слушателей
+    for (const listener of this.listeners) listener(this.lang);
+  }
+
+  getLang() {
+    return this.lang;
   }
 
   // перевод

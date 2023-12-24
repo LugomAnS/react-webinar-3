@@ -12,21 +12,24 @@ import useServices from './use-services';
 export default function useTranslate() {
   const services = useServices();
 
-  const [lang, setLang] = useState(services.i18n.lang);
+  const [lang, setLang] = useState(services.i18n.getLang());
 
   const i18n = useMemo(() => ({
     // Код локали
     lang,
     // Функция для смены локали
-    setLang: (value) => {
-      services.i18n.setLang(value),
-      setLang(value);
-    },
+    setLang: (value) => services.i18n.setLang(value),
     // Функция для локализации текстов
     t: (text, number) => services.i18n.textTranslate(lang, text, number)
-  }), [services, lang]);
+  }), [lang]);
 
-  console.log(services);
+  const unsubscribe = useMemo(() => {
+    // Подписка. Возврат функции для отписки
+    return services.i18n.subscribe((lang) => setLang(lang));
+  }, []); // Нет зависимостей - исполнится один раз
+
+  // Отписка от store при демонтировании компонента
+  useEffect(() => unsubscribe, [unsubscribe]);
 
   return i18n;
 }
